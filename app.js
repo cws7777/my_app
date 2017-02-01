@@ -148,26 +148,26 @@ app.get('/users/:id/edit', function(req, res){
     );
   });
 });  //edit
-app.put('/users/:id', checkUserRegValidation, function(req, res){
-  User.findById(req.params.id, req.body.user, fuction(err, user){
-    if (err) return res.json({success:false, message: err});
+app.put('/users/:id', checkUserRegValidation, function(req,res){
+  User.findById(req.params.id, req.body.user, function (err,user) {
+    if(err) return res.json({success:"false", message:err});
     if(req.body.user.password == user.password){
       if(req.body.user.newPassword){
-        req.body.user.password = req.body.user.newPassword;
-      } else{
+        req.body.user.password=req.body.user.newPassword;
+      } else {
         delete req.body.user.password;
       }
-      User.findByIdAndUpdate(req.params.id, req.body.user, function(err, user){
-        if (err) return res.json({success:false, message: err});
+      User.findByIdAndUpdate(req.params.id, req.body.user, function (err,user) {
+        if(err) return res.json({success:"false", message:err});
         res.redirect('/users/'+req.params.id);
       });
-    } else{
+    } else {
       req.flash("formData", req.body.user);
       req.flash("passwordError", "- Invalid password");
       res.redirect('/users/'+req.params.id+"/edit");
     }
   });
-});  //update
+}); //update
 
 //set posts routes
 app.get('/posts', function(req, res){
