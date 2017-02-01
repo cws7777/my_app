@@ -24,6 +24,7 @@ db.on("error",function (err) {
 var postSchema = mongoose.Schema({
   title: {type:String, required:true},
   body: {type:String, required:true},
+  author: {type:mongoose.Schema.Types.ObjectId, ref:'user', required: true},
   createdAt: {type:Date, default:Date.now},
   updatedAt: Date
 });
@@ -196,11 +197,10 @@ app.get('/posts', function(req,res){
     res.render("posts/index", {data:posts, user:req.user});
   });
 }); // index
-app.get('/posts/new', function(req,res){
+app.get('/posts/new', isLoggedIn, function(req,res){
   res.render("posts/new");
 }); // new
-app.post('/posts', function(req,res){
-  console.log(req.body);
+app.post('/posts', isLoggedIn, function(req,res){
   Post.create(req.body.post,function (err,post) {
     if(err) return res.json({success:false, message:err});
     res.redirect('/posts');
