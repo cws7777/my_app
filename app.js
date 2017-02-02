@@ -194,7 +194,7 @@ app.put('/users/:id', isLoggedIn, checkUserRegValidation, function(req,res){
 app.get('/posts', function(req,res){
   Post.find({}).populate("author").sort('-createdAt').exec(function (err,posts) {
     if(err) return res.json({success:false, message:err});
-    res.render("posts/index", {data:posts, user:req.user});
+    res.render("posts/index", {posts:posts, user:req.user});
   });
 }); // index
 app.get('/posts/new', isLoggedIn, function(req,res){
