@@ -26,7 +26,7 @@
       <span class="float_right">Date</span>
       <span class="float_right">Author</span>
     </li>
-    <% data.forEach(function(e){ %>
+    <% posts.forEach(function(e){ %>
       <li>
         <a href="/posts/<%= e._id %>"><%= e.title %></a>
         <span class="float_right"><%= e.createdAt.toLocaleDateString() %></span>
