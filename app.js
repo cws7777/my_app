@@ -213,23 +213,32 @@ app.get('/posts/:id', function(req,res){
     res.render("posts/show", {data:post, user:req.user});
   });
 }); // show
-app.get('/posts/:id/edit', function(req,res){
+app.get('/posts/:id/edit', isLoggedIn, function(req,res){
   Post.findById(req.params.id, function (err,post) {
     if(err) return res.json({success:false, message:err});
-    res.render("posts/edit", {data:post});
+    if(!req.user._id.equals(post.author)) return res.json({success:false, message:"Unauthorized Attempt"});
+    res.render("posts/edit", {data:post, user:req.user});
   });
 }); // edit
-app.put('/posts/:id', function(req,res){
+app.put('/posts/:id', isLoggedIn, function(req,res){
   req.body.post.updatedAt=Date.now();
-  Post.findByIdAndUpdate(req.params.id, req.body.post, function (err,post) {
+  Post.findById(req.params.id, function (err,post) {
     if(err) return res.json({success:false, message:err});
-    res.redirect('/posts/'+req.params.id);
+    if(!req.user._id.equals(post.author)) return res.json({success:false, message:"Unauthorized Attempt"});
+    Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, post){
+      if(err) return res.json({success:false, message:err});
+      res.redirect('/posts/'+req.params.id);
+    });
   });
 }); //update
-app.delete('/posts/:id', function(req,res){
-  Post.findByIdAndRemove(req.params.id, function (err,post) {
+app.delete('/posts/:id', isLoggedIn, function(req,res){
+  Post.findById(req.params.id, function (err,post) {
     if(err) return res.json({success:false, message:err});
-    res.redirect('/posts');
+    if(!req.user._id.equals(post.author)) return res.json({success:false, message:"Unauthorized Attempt"});
+    Post.findByIdAndRemove(req.params.id, function (err, post){
+      if(err) return res.json({success:false, message:err});
+      res.redirect('/posts');
+    });
   });
 }); //destroy
 
