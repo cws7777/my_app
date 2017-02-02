@@ -1,7 +1,7 @@
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require('mongoose');
-var Post     = require('../models/Post');
+var Post     = require('../models/post');
 
 router.get('/', function(req,res){
   Post.find({}).populate("author").sort('-createdAt').exec(function (err,posts) {

@@ -1,7 +1,7 @@
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require('mongoose');
-var User     = require('../models/User');
+var User     = require('../models/user');
 var async    = require('async');
 
 router.get('/new', function(req,res){
