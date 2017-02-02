@@ -1,16 +1,16 @@
 var express  = require('express');
-var app      = express();
-var path     = require('path');
-var mongoose = require('mongoose');
-var session  = require('express-session');
-var flash    = require('connect-flash');
+var app      = express();                 //Calling express.js package into app variable.
+var path     = require('path');           //package for directory path.
+var mongoose = require('mongoose');       //the most common package for controlling MONGO_DB in express.js
+var session  = require('express-session');//package that is like a flag which can control user is logged in or out.
+var flash    = require('connect-flash');  //package that can save session data as flash.
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 
 // database
-mongoose.connect(process.env.MONGO_DB);
+mongoose.connect(process.env.MONGO_DB);   //Connecting to mongoDB that I've already built in MongoDB.
 var db = mongoose.connection;
-db.once("open",function () {
+db.once("open",function () {              //Status of Database from mongoDB is connected or not.
   console.log("DB connected!");
 });
 db.on("error",function (err) {
@@ -18,10 +18,10 @@ db.on("error",function (err) {
 });
 
 // view engine
-app.set("view engine", 'ejs');
+app.set("view engine", 'ejs');          //Noticing to express that ejs will be used as view engine.
 
 // middlewares
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));      //Setting static folder directory. path.join makes automatic '/' even developers don't put '/'.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride("_method"));

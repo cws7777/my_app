@@ -1,4 +1,4 @@
-var passport      = require('passport');
+var passport      = require('passport');        //passport package is the most common package for controlling accounts.
 var LocalStrategy = require('passport-local').Strategy;
 var User          = require('../models/User');
 
