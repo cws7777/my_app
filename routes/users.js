@@ -45,7 +45,7 @@ router.put('/:id', isLoggedIn, checkUserRegValidation, function(req,res){
     if(err) return res.json({success:"false", message:err});
     if(user.authenticate(req.body.user.password)){
       if(req.body.user.newPassword){
-        user.password = req.body.user.newPassword;
+        user.body.user.password = req.hash(req.body.user.newPassword);
         user.save();
       } else {
         delete req.body.user.password;
